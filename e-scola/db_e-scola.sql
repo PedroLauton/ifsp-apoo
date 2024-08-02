@@ -85,14 +85,27 @@ create table tbMensagem (
     ,foreign key (chat) references tbchatsala(cod)
 );
 
-create table tbEncontroSincrono (
+create table tbAtividade ( -- cronograma
 	cod int primary key
+    ,nome varchar(150)
+    ,dataInicio datetime
+    ,dataTermino datetime
 );
 
--- Atividade
+create table tbEncontroSincrono (
+	cod int primary key
+    ,assunto varchar(150)
+    ,descricao varchar(300)
+    ,dataHorario datetime
+    ,tags varchar(100)
+    ,linkConteudo varchar(300)
+    ,ramo varchar(150)
+    ,recompensa varchar(150)
+    ,atividade int
+    ,foreign key (atividade) references tbAtividade(cod)
+);
 
 -- NOTIFICACAO
-
 
 -- SALA VIRTUAL
 
