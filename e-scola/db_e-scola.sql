@@ -27,7 +27,7 @@ create table tbmateria (
 	cod int primary key
     ,nome varchar(150)
     ,sigla char(4)
-    ,foiDesativado tinyint(1)
+    ,desativado tinyint(1)
     ,professor int
     ,foreign key (professor) references tbprofessor(cod)
 );
@@ -85,11 +85,29 @@ create table tbMensagem (
     ,foreign key (chat) references tbchatsala(cod)
 );
 
+create table tbSalaVirtual (
+	cod int primary key
+    ,nome varchar(150)
+    ,descricao varchar(300)
+    ,miniatura varchar(500)
+    ,volumetriaEstudantes int
+);
+
+create table tbestudantes_salavirtual (
+	cod int primary key
+    ,estudante int
+    ,salavirtual int
+    ,foreign key (estudante) references tbestudante(cod)
+    ,foreign key (salavirtual) references tbSalaVirtual(cod)
+);
+
 create table tbAtividade ( -- cronograma
 	cod int primary key
     ,nome varchar(150)
     ,dataInicio datetime
     ,dataTermino datetime
+    ,salavirtual int
+    ,foreign key (salavirtual) references tbSalaVirtual(cod)
 );
 
 create table tbEncontroSincrono (
@@ -105,12 +123,14 @@ create table tbEncontroSincrono (
     ,foreign key (atividade) references tbAtividade(cod)
 );
 
--- NOTIFICACAO
-
--- SALA VIRTUAL
-
--- N:N Estudante - Sala Virtual
-
+create table tbNotificacao (
+	cod int primary key
+    ,titulo varchar(150)
+    ,descricao varchar(300)
+    ,visualizado tinyint(1)
+    ,atividade int
+    ,foreign key (atividade) references tbAtividade(cod)
+);
 
 
 
