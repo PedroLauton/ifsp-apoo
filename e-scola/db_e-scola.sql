@@ -29,7 +29,7 @@ create table tbmateria (
     ,sigla char(4)
     ,desativado tinyint(1)
     ,professor int
-    ,foreign key (professor) references tbprofessor(cod)
+    ,foreign key (professor) references tbprofessor(matricula)
 );
 
 create table tbguiaestudos (
@@ -48,27 +48,8 @@ create table tbMaterialComplementar (
     ,titulo varchar(150)
 	,miniatura varchar(500)
     ,descricao varchar(300)
-);
-
-create table tbguiaestudos_materialcomplementar (
-	cod int primary key
     ,guiaestudos int
-    ,materialcomplementar int
     ,foreign key (guiaestudos) references tbguiaestudos(cod)
-    ,foreign key (materialcomplementar) references tbmaterialcomplementar(cod)
-);
-
-create table tbArtefatoInteratividade (
-	cod int primary key
-    ,tipo varchar(150)
-    ,titulo varchar(150)
-    ,descricao varchar(300)
-    ,opcoes text
-    ,resposta int
-    ,requisitos text
-    ,entregaveis text
-    ,materia int
-    ,foreign key (materia) references tbmateria(cod)
 );
 
 create table tbChatSala (
@@ -85,20 +66,35 @@ create table tbMensagem (
     ,foreign key (chat) references tbchatsala(cod)
 );
 
-create table tbSalaVirtual (
+create table tbSalaVirtual ( -- turma
 	cod int primary key
     ,nome varchar(150)
     ,descricao varchar(300)
     ,miniatura varchar(500)
     ,volumetriaEstudantes int
+    ,materia int
+    ,chat int
+    ,foreign key (materia) references tbmateria(cod)
+    ,foreign key (chat) references tbchatsala(cod)
 );
 
 create table tbestudantes_salavirtual (
 	cod int primary key
     ,estudante int
     ,salavirtual int
-    ,foreign key (estudante) references tbestudante(cod)
+    ,foreign key (estudante) references tbestudante(matricula)
     ,foreign key (salavirtual) references tbSalaVirtual(cod)
+);
+
+create table tbArtefatoInteratividade (
+	cod int primary key
+    ,tipo varchar(150)
+    ,titulo varchar(150)
+    ,descricao varchar(300)
+    ,opcoes text
+    ,resposta int
+    ,requisitos text
+    ,entregaveis text
 );
 
 create table tbAtividade ( -- cronograma
@@ -107,7 +103,9 @@ create table tbAtividade ( -- cronograma
     ,dataInicio datetime
     ,dataTermino datetime
     ,salavirtual int
+    ,artefatointeratividade int
     ,foreign key (salavirtual) references tbSalaVirtual(cod)
+    ,foreign key (artefatointeratividade) references tbArtefatoInteratividade(cod)
 );
 
 create table tbEncontroSincrono (
@@ -131,10 +129,3 @@ create table tbNotificacao (
     ,atividade int
     ,foreign key (atividade) references tbAtividade(cod)
 );
-
-
-
-
-
-
-
